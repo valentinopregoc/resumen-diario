@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resumen · Miércoles 30 de septiembre de 2026</title>
+<style>
+  :root { --bg:#fcfcfb; --ink:#1f1e1b; --soft:#5f5e58; --line:#e4e3dc; --accent:#b8452a; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#161614; --ink:#eeede8; --soft:#a9a8a0; --line:#2e2d29; --accent:#e0714f; } }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.55 -apple-system,"Segoe UI",sans-serif; }
+  main { max-width:680px; margin:0 auto; padding:20px 18px 60px; }
+  .fecha { color:var(--soft); font-size:14px; }
+  h1 { font-size:26px; margin:4px 0 16px; }
+  h2 { font-size:19px; margin:28px 0 8px; padding-top:16px; border-top:1px solid var(--line); }
+  p { margin:0 0 12px; }
+  a { color:var(--accent); }
+  .audio { position:sticky; top:0; background:var(--bg); padding:10px 0; display:flex; gap:10px; z-index:1; }
+  button { font:600 16px -apple-system,sans-serif; padding:12px 18px; border-radius:10px; border:0; background:var(--accent); color:#fff; }
+  button.sec { background:transparent; color:var(--accent); border:1px solid var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <div class="fecha">Miércoles 30 de septiembre de 2026</div>
+  <h1>Resumen del día</h1>
+  <div class="audio">
+    <button id="play">▶ Escuchar</button>
+    <button id="stop" class="sec">■ Detener</button>
+  </div>
+    <section class="leer" lang="es">
+    <h2>Honduras</h2>
+    <p>TEGUCIGALPA — El presidente Nasry Asfura sancionó este martes la Ley de Energía Eléctrica en Casa Presidencial. La norma reorganiza la Empresa Nacional de Energía Eléctrica (ENEE) en tres compañías, una de generación, una de transmisión y una de distribución, bajo una estructura de holding estatal. Asfura dijo: "Con esta ley no se resuelven todos los problemas, pero es el primer paso". El decreto irá a la Empresa Nacional de Artes Gráficas para su publicación en el diario oficial. Fuente: <a href="https://www.laprensa.hn/honduras/nasry-asfura-sanciona-ley-energia-electrica-fortalecer-transformar-enee-DJ32196104">La Prensa</a>.</p>
+    <p>TEGUCIGALPA — La ENEE anunció cortes de energía en más de 100 zonas del país este miércoles 30 de septiembre, por trabajos de mantenimiento en la red. En la mayoría de las zonas el servicio se suspenderá de 8 a.m. a 4 p.m. CST (Honduras); los horarios varían en Valle, Ocotepeque, Copán, Tocoa y Bonito Oriental. La empresa dijo que las interrupciones buscan "mejorar la red eléctrica". Fuente: <a href="https://www.laprensa.hn/fotogalerias/honduras/honduras-mas-100-zonas-honduras-no-tendran-luz-miercoles-30-septiembre-CJ32191254">La Prensa</a>.</p>
+    <p>LA CEIBA — Un ferri que regresaba de Roatán encalló este martes al intentar atracar en el muelle de Cabotaje, según La Prensa. Fuerzas navales y equipos de rescate evacuaron a todos los pasajeros sin lesiones. El gerente del puerto, Jean Rosa, dijo que se investiga por qué la nave quedó varada en una zona con 11 pies de profundidad y no descartó error humano. Fuente: <a href="https://www.laprensa.hn/honduras/honduras-rescatan-ilesos-pasajeros-tras-encallar-yate-muelle-laceiba-HJ32194322">La Prensa</a>.</p>
+    <p>MADRID — Monseñor Teodoro Gómez, obispo de Choluteca, de 63 años, murió en Madrid cuando viajaba a Roma, informó La Prensa. Autoridades españolas realizan procedimientos forenses y una autopsia para determinar las circunstancias. La embajada de Honduras en Madrid coordina la repatriación del cuerpo, tras la cual la Iglesia católica realizará velatorio, honras fúnebres y sepelio en Honduras. Fuente: <a href="https://www.laprensa.hn/honduras/honduras-cuerpo-monsenor-teodoro-gomez-sera-repatriado-honduras-muerte-madrid-AJ32192640">La Prensa</a>.</p>
+  </section>
+  <section class="leer" lang="en">
+    <h2>AI &amp; Claude lesson: Tokens</h2>
+    <p>Language models do not read words. They read tokens: chunks of text, often a whole short word, part of a longer word, or a punctuation mark. A tokenizer splits your text into these pieces before the model sees it, and the model produces its answer one token at a time. As a rough guide, one token in English is about four characters, though this varies by language and content.</p>
+    <p>Tokens matter for three reasons. Cost: usage of most AI services is priced per token, both for input and output. Limits: the context window, the maximum amount of text a model can consider at once, is measured in tokens. Speed: longer outputs take longer to generate.</p>
+    <p>Example: a 20-page loan policy document may run to roughly 10,000 tokens. Pasting it into every request is expensive and crowds out room for the actual question. Practical application in banking: before automating credit memo summaries, estimate tokens per memo and multiply by monthly volume to budget the cost. Then decide whether to send full documents or only the relevant sections.</p>
+  </section>
+
+</main>
+<script>
+(function () {
+  var synth = window.speechSynthesis, cola = [], i = 0, pausado = false;
+  var btn = document.getElementById('play');
+  function voz(idioma) {
+    var v = synth.getVoices();
+    var pref = idioma === 'en' ? /^en-US/ : /^es-(MX|US|419)/;
+    var base = idioma === 'en' ? /^en/ : /^es/;
+    return v.find(function (x) { return pref.test(x.lang); }) ||
+           v.find(function (x) { return base.test(x.lang); }) || null;
+  }
+  function trozos() {
+    var t = [];
+    document.querySelectorAll('.leer h2, .leer p').forEach(function (el) {
+      var s = el.innerText.replace(/\s+/g, ' ').trim();
+      var sec = el.closest('.leer');
+      var idioma = (sec && sec.getAttribute('lang') || 'es').slice(0, 2);
+      if (s) t.push({ texto: s, idioma: idioma });
+    });
+    return t;
+  }
+  function hablar() {
+    if (i >= cola.length) { btn.textContent = '▶ Escuchar'; i = 0; return; }
+    var u = new SpeechSynthesisUtterance(cola[i].texto);
+    u.lang = cola[i].idioma === 'en' ? 'en-US' : 'es-MX'; u.rate = 1.0;
+    var v = voz(cola[i].idioma); if (v) u.voice = v;
+    u.onend = function () { if (!pausado) { i++; hablar(); } };
+    synth.speak(u);
+  }
+  btn.onclick = function () {
+    if (!synth) { alert('Tu navegador no soporta audio.'); return; }
+    if (synth.speaking && !synth.paused) { synth.pause(); pausado = true; btn.textContent = '▶ Continuar'; return; }
+    if (synth.paused) { synth.resume(); pausado = false; btn.textContent = '⏸ Pausar'; return; }
+    cola = trozos(); i = 0; pausado = false; btn.textContent = '⏸ Pausar'; hablar();
+  };
+  document.getElementById('stop').onclick = function () {
+    pausado = true; synth.cancel(); i = 0; btn.textContent = '▶ Escuchar';
+  };
+})();
+</script>
+</body>
+</html>
