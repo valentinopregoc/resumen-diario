@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resumen · {{FECHA}}</title>
+<style>
+  :root { --bg:#fcfcfb; --ink:#1f1e1b; --soft:#5f5e58; --line:#e4e3dc; --accent:#b8452a; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#161614; --ink:#eeede8; --soft:#a9a8a0; --line:#2e2d29; --accent:#e0714f; } }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.55 -apple-system,"Segoe UI",sans-serif; }
+  main { max-width:680px; margin:0 auto; padding:20px 18px 60px; }
+  .fecha { color:var(--soft); font-size:14px; }
+  h1 { font-size:26px; margin:4px 0 16px; }
+  h2 { font-size:19px; margin:28px 0 8px; padding-top:16px; border-top:1px solid var(--line); }
+  p { margin:0 0 12px; }
+  a { color:var(--accent); }
+  .audio { position:sticky; top:0; background:var(--bg); padding:10px 0; display:flex; gap:10px; z-index:1; }
+  button { font:600 16px -apple-system,sans-serif; padding:12px 18px; border-radius:10px; border:0; background:var(--accent); color:#fff; }
+  button.sec { background:transparent; color:var(--accent); border:1px solid var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <div class="fecha">{{FECHA}}</div>
+  <h1>Resumen del día</h1>
+  <div class="audio">
+    <button id="play">▶ Escuchar</button>
+    <button id="stop" class="sec">■ Detener</button>
+  </div>
+  {{CONTENIDO}}
+</main>
+<script>
+(function () {
+  var synth = window.speechSynthesis, cola = [], i = 0, pausado = false;
+  var btn = document.getElementById('play');
+  function voz(idioma) {
+    var v = synth.getVoices();
+    var pref = idioma === 'en' ? /^en-US/ : /^es-(MX|US|419)/;
+    var base = idioma === 'en' ? /^en/ : /^es/;
+    return v.find(function (x) { return pref.test(x.lang); }) ||
+           v.find(function (x) { return base.test(x.lang); }) || null;
+  }
+  function trozos() {
+    var t = [];
+    document.querySelectorAll('.leer h2, .leer p').forEach(function (el) {
+      var s = el.innerText.replace(/\s+/g, ' ').trim();
+      var sec = el.closest('.leer');
+      var idioma = (sec && sec.getAttribute('lang') || 'es').slice(0, 2);
+      if (s) t.push({ texto: s, idioma: idioma });
+    });
+    return t;
+  }
+  function hablar() {
+    if (i >= cola.length) { btn.textContent = '▶ Escuchar'; i = 0; return; }
+    var u = new SpeechSynthesisUtterance(cola[i].texto);
+    u.lang = cola[i].idioma === 'en' ? 'en-US' : 'es-MX'; u.rate = 1.0;
+    var v = voz(cola[i].idioma); if (v) u.voice = v;
+    u.onend = function () { if (!pausado) { i++; hablar(); } };
+    synth.speak(u);
+  }
+  btn.onclick = function () {
+    if (!synth) { alert('Tu navegador no soporta audio.'); return; }
+    if (synth.speaking && !synth.paused) { synth.pause(); pausado = true; btn.textContent = '▶ Continuar'; return; }
+    if (synth.paused) { synth.resume(); pausado = false; btn.textContent = '⏸ Pausar'; return; }
+    cola = trozos(); i = 0; pausado = false; btn.textContent = '⏸ Pausar'; hablar();
+  };
+  document.getElementById('stop').onclick = function () {
+    pausado = true; synth.cancel(); i = 0; btn.textContent = '▶ Escuchar';
+  };
+})();
+</script>
+</body>
+</html>
