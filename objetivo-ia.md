@@ -62,3 +62,4 @@ A phone-first morning dashboard that feels like a native app:
 2026-10-21 · Step 1 · repeated
 2026-10-22 · Step 1 · repeated
 2026-10-23 · Step 1 · repeated
+2026-10-26 · Step 1 · repeated
