@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resumen · 2026-11-02</title>
+<style>
+  :root { --bg:#fcfcfb; --ink:#1f1e1b; --soft:#5f5e58; --line:#e4e3dc; --accent:#b8452a; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#161614; --ink:#eeede8; --soft:#a9a8a0; --line:#2e2d29; --accent:#e0714f; } }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.55 -apple-system,"Segoe UI",sans-serif; }
+  main { max-width:680px; margin:0 auto; padding:20px 18px 60px; }
+  .fecha { color:var(--soft); font-size:14px; }
+  h1 { font-size:26px; margin:4px 0 16px; }
+  h2 { font-size:19px; margin:28px 0 8px; padding-top:16px; border-top:1px solid var(--line); }
+  p { margin:0 0 12px; }
+  a { color:var(--accent); }
+  .audio { position:sticky; top:0; background:var(--bg); padding:10px 0; display:flex; gap:10px; z-index:1; }
+  button { font:600 16px -apple-system,sans-serif; padding:12px 18px; border-radius:10px; border:0; background:var(--accent); color:#fff; }
+  button.sec { background:transparent; color:var(--accent); border:1px solid var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <div class="fecha">2026-11-02</div>
+  <h1>Resumen del día</h1>
+  <div class="audio">
+    <button id="play">▶ Escuchar</button>
+    <button id="stop" class="sec">■ Detener</button>
+  </div>
+  <section class="leer" lang="en"><h2>World</h2><p>SOUTH FLORIDA — A jet nosedived and burst into flames near a busy roadway in South Florida, and all nine people on board died, The Associated Press reported. Source: <a href="https://apnews.com">AP News</a></p><p>TEHRAN — Iran&#x27;s top diplomat said he hopes the United States shows &quot;rationality,&quot; The Associated Press reported in its Middle East roundup. Source: <a href="https://apnews.com">AP News</a></p><p>LONDON — Global shares were mixed and U.S. futures advanced Monday, while oil prices fell nearly 4%, The Associated Press reported. Source: <a href="https://apnews.com">AP News</a></p><p>ALASKA — A judge dismissed a lawsuit seeking to block certification of Alaska&#x27;s Senate race if the Republican incumbent loses, The Associated Press reported. Source: <a href="https://apnews.com">AP News</a></p><p>SOFIA — Initial results suggest Yotova won Bulgaria&#x27;s presidential runoff and would become the country&#x27;s first elected female president, The Associated Press reported. Source: <a href="https://apnews.com">AP News</a></p></section>
+  <div id="guion" hidden><p lang="en">Good morning, Valentino. Here&#x27;s what you need to know today.</p><p lang="en">A small jet crashed near a busy road in South Florida. The AP says all nine people on board died.</p><p lang="en">Iran&#x27;s top diplomat says he hopes the U.S. shows rationality, according to the AP.</p><p lang="en">Markets are mixed this morning. U.S. futures are up, and oil prices are down almost 4%.</p><p lang="en">In Alaska, a judge threw out a lawsuit that tried to block certification of the Senate race if the Republican incumbent loses.</p><p lang="en">And in Bulgaria, early results suggest Yotova won the runoff. She would be the first elected female president.</p><p lang="en">That&#x27;s it for today. Have a good one.</p></div>
+</main>
+<script>
+(function () {
+  var synth = window.speechSynthesis, cola = [], i = 0, pausado = false;
+  var btn = document.getElementById('play');
+  // Prefer high-quality device voices (Premium/Enhanced/Neural) over the default robotic ones
+  function calidad(v) {
+    var n = (v.voiceURI + ' ' + v.name).toLowerCase();
+    if (/premium|neural|natural/.test(n)) return 3;
+    if (/enhanced|mejorad/.test(n)) return 2;
+    if (/compact|eloquence|espeak/.test(n)) return 0;
+    return 1;
+  }
+  function voz(idioma) {
+    var pref = idioma === 'en' ? /^en[-_]US/i : /^es[-_](MX|US|419)/i;
+    var base = idioma === 'en' ? /^en/i : /^es/i;
+    var lista = synth.getVoices().filter(function (x) { return base.test(x.lang); });
+    lista.sort(function (a, b) {
+      return (calidad(b) - calidad(a)) || ((pref.test(b.lang) ? 1 : 0) - (pref.test(a.lang) ? 1 : 0));
+    });
+    return lista[0] || null;
+  }
+  // Uses the conversational script (#guion) if present; falls back to the page text
+  function trozos() {
+    var t = [], nodos = document.querySelectorAll('#guion p');
+    if (!nodos.length) nodos = document.querySelectorAll('.leer h2, .leer p');
+    nodos.forEach(function (el) {
+      var s = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      var sec = el.closest('[lang]');
+      var idioma = (el.getAttribute('lang') || (sec && sec.getAttribute('lang')) || 'es').slice(0, 2);
+      if (s) t.push({ texto: s, idioma: idioma });
+    });
+    return t;
+  }
+  function hablar() {
+    if (i >= cola.length) { btn.textContent = '▶ Escuchar'; i = 0; return; }
+    var u = new SpeechSynthesisUtterance(cola[i].texto);
+    u.lang = cola[i].idioma === 'en' ? 'en-US' : 'es-MX';
+    u.rate = 0.97; u.pitch = 1.0;
+    var v = voz(cola[i].idioma); if (v) u.voice = v;
+    u.onend = function () { if (!pausado) { i++; setTimeout(hablar, 450); } };
+    synth.speak(u);
+  }
+  if (synth && synth.onvoiceschanged !== undefined) synth.onvoiceschanged = function () {};
+  btn.onclick = function () {
+    if (!synth) { alert('Tu navegador no soporta audio.'); return; }
+    if (synth.speaking && !synth.paused) { synth.pause(); pausado = true; btn.textContent = '▶ Continuar'; return; }
+    if (synth.paused) { synth.resume(); pausado = false; btn.textContent = '⏸ Pausar'; return; }
+    cola = trozos(); i = 0; pausado = false; btn.textContent = '⏸ Pausar'; hablar();
+  };
+  document.getElementById('stop').onclick = function () {
+    pausado = true; synth.cancel(); i = 0; btn.textContent = '▶ Escuchar';
+  };
+})();
+</script>
+</body>
+</html>
