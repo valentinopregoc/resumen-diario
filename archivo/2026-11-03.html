@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resumen · martes 3 de noviembre de 2026</title>
+<style>
+  :root { --bg:#fcfcfb; --ink:#1f1e1b; --soft:#5f5e58; --line:#e4e3dc; --accent:#b8452a; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#161614; --ink:#eeede8; --soft:#a9a8a0; --line:#2e2d29; --accent:#e0714f; } }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.55 -apple-system,"Segoe UI",sans-serif; }
+  main { max-width:680px; margin:0 auto; padding:20px 18px 60px; }
+  .fecha { color:var(--soft); font-size:14px; }
+  h1 { font-size:26px; margin:4px 0 16px; }
+  h2 { font-size:19px; margin:28px 0 8px; padding-top:16px; border-top:1px solid var(--line); }
+  p { margin:0 0 12px; }
+  a { color:var(--accent); }
+  .audio { position:sticky; top:0; background:var(--bg); padding:10px 0; display:flex; gap:10px; z-index:1; }
+  button { font:600 16px -apple-system,sans-serif; padding:12px 18px; border-radius:10px; border:0; background:var(--accent); color:#fff; }
+  button.sec { background:transparent; color:var(--accent); border:1px solid var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <div class="fecha">martes 3 de noviembre de 2026</div>
+  <h1>Resumen del día</h1>
+  <div class="audio">
+    <button id="play">▶ Escuchar</button>
+    <button id="stop" class="sec">■ Detener</button>
+  </div>
+  <section class="leer" lang="en"><h2>World</h2><p><strong>U.S. strikes on Iranian targets.</strong> WASHINGTON — The United States has conducted defensive strikes on Iranian targets in the Strait of Hormuz, a U.S. official said. The Associated Press reported the strikes early Tuesday. <em>Source: AP</em></p><p><strong>Russian strike in southern Ukraine.</strong> SOUTHERN UKRAINE — Russia bombed an aid center and a shelter in southern Ukraine, killing 26 people, officials said. The Associated Press reported the attack Monday night. <em>Source: AP</em></p><p><strong>Spain train collision.</strong> MADRID — Sixty-nine people died in a train collision in Spain, and the dead include four Americans and one Canadian, the Associated Press reported Monday. <em>Source: AP</em></p><p><strong>Supreme Court and California ballots.</strong> WASHINGTON — The U.S. Supreme Court rejected a Trump administration push to set aside thousands of California ballots, the Associated Press reported Tuesday. <em>Source: AP</em></p><p><strong>Freezer cyberattacks in Europe.</strong> EUROPE — Supermarket freezers in several European countries were hit by apparent cyberattacks, the Associated Press reported Tuesday. <em>Source: AP</em></p></section>
+<section class="leer" lang="en"><h2>Tech</h2><p><strong>Apple age limits on dating apps.</strong> NEW YORK — Apple is restricting dating apps and romance-themed chatbots to users 18 and older, The Verge reported Tuesday. <em>Source: The Verge</em></p><p><strong>Android set-top box botnet.</strong> NEW YORK — One of Google&#x27;s Android partners turned 1.3 million set-top boxes into a botnet, The Verge reported Tuesday. <em>Source: The Verge</em></p><p><strong>EU adviser on Google AI chatbot.</strong> LUXEMBOURG — Google&#x27;s AI chatbot&#x27;s use of press items may infringe copyright rules, an adviser to the European Union&#x27;s top court said, Reuters reported Tuesday. <em>Source: Reuters</em></p></section>
+<section class="leer" lang="en"><h2>Sports this week</h2><p><strong>Real Madrid:</strong> at AEK Athens · Wed Nov. 4 · 11:45 a.m. (Honduras) · Champions League</p><p><strong>Marathón:</strong> vs Platense · Thu Nov. 5 · 7:30 p.m. (Honduras) · Liga Nacional</p><p><strong>Real Madrid:</strong> at Valencia · Sat Nov. 7 · 2:00 p.m. (Honduras) · LaLiga</p><p><strong>Chelsea:</strong> at Sunderland · Sun Nov. 8 · 8:00 a.m. (Honduras) · Premier League</p><p><strong>Marathón:</strong> vs CD Choloma · Sun Nov. 8 · 7:30 p.m. (Honduras) · Liga Nacional</p></section>
+
+  <div id="guion" hidden><p lang="en">Good morning, Valentino. Here&#x27;s what you need to know today.</p><p lang="en">First, the world. A U.S. official says the United States carried out defensive strikes on Iranian targets in the Strait of Hormuz. The Associated Press reported it early Tuesday.</p><p lang="en">In southern Ukraine, officials say a Russian bombing of an aid center and a shelter killed 26 people.</p><p lang="en">In Spain, 69 people died in a train collision. Four Americans and one Canadian were among the dead, the AP says.</p><p lang="en">Back in Washington, the Supreme Court turned down a push by the Trump administration to set aside thousands of California ballots.</p><p lang="en">And across Europe, supermarket freezers in several countries were hit by what look like cyberattacks, according to the AP.</p><p lang="en">Moving to tech. Apple is limiting dating apps and romance-themed chatbots to users 18 and older, The Verge reports.</p><p lang="en">Also from The Verge: one of Google&#x27;s Android partners turned about one point three million set-top boxes into a botnet.</p><p lang="en">And in Europe, an adviser to the E.U.&#x27;s top court said Google&#x27;s AI chatbot may be breaking copyright rules in how it uses press content. That&#x27;s from Reuters.</p><p lang="en">Now, sports this week. Real Madrid plays at AEK Athens on Wednesday at 11:45 in the morning, Honduras time, in the Champions League. Then they visit Valencia on Saturday at 2 p.m.</p><p lang="en">Marathón hosts Platense on Thursday at 7:30 in the evening, and CD Choloma on Sunday at the same time. Chelsea visits Sunderland on Sunday at 8 a.m.</p><p lang="en">That&#x27;s it for today. Have a good one.</p></div>
+</main>
+<script>
+(function () {
+  var synth = window.speechSynthesis, cola = [], i = 0, pausado = false;
+  var btn = document.getElementById('play');
+  // Prefer high-quality device voices (Premium/Enhanced/Neural) over the default robotic ones
+  function calidad(v) {
+    var n = (v.voiceURI + ' ' + v.name).toLowerCase();
+    if (/premium|neural|natural/.test(n)) return 3;
+    if (/enhanced|mejorad/.test(n)) return 2;
+    if (/compact|eloquence|espeak/.test(n)) return 0;
+    return 1;
+  }
+  function voz(idioma) {
+    var pref = idioma === 'en' ? /^en[-_]US/i : /^es[-_](MX|US|419)/i;
+    var base = idioma === 'en' ? /^en/i : /^es/i;
+    var lista = synth.getVoices().filter(function (x) { return base.test(x.lang); });
+    lista.sort(function (a, b) {
+      return (calidad(b) - calidad(a)) || ((pref.test(b.lang) ? 1 : 0) - (pref.test(a.lang) ? 1 : 0));
+    });
+    return lista[0] || null;
+  }
+  // Uses the conversational script (#guion) if present; falls back to the page text
+  function trozos() {
+    var t = [], nodos = document.querySelectorAll('#guion p');
+    if (!nodos.length) nodos = document.querySelectorAll('.leer h2, .leer p');
+    nodos.forEach(function (el) {
+      var s = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      var sec = el.closest('[lang]');
+      var idioma = (el.getAttribute('lang') || (sec && sec.getAttribute('lang')) || 'es').slice(0, 2);
+      if (s) t.push({ texto: s, idioma: idioma });
+    });
+    return t;
+  }
+  function hablar() {
+    if (i >= cola.length) { btn.textContent = '▶ Escuchar'; i = 0; return; }
+    var u = new SpeechSynthesisUtterance(cola[i].texto);
+    u.lang = cola[i].idioma === 'en' ? 'en-US' : 'es-MX';
+    u.rate = 0.97; u.pitch = 1.0;
+    var v = voz(cola[i].idioma); if (v) u.voice = v;
+    u.onend = function () { if (!pausado) { i++; setTimeout(hablar, 450); } };
+    synth.speak(u);
+  }
+  if (synth && synth.onvoiceschanged !== undefined) synth.onvoiceschanged = function () {};
+  btn.onclick = function () {
+    if (!synth) { alert('Tu navegador no soporta audio.'); return; }
+    if (synth.speaking && !synth.paused) { synth.pause(); pausado = true; btn.textContent = '▶ Continuar'; return; }
+    if (synth.paused) { synth.resume(); pausado = false; btn.textContent = '⏸ Pausar'; return; }
+    cola = trozos(); i = 0; pausado = false; btn.textContent = '⏸ Pausar'; hablar();
+  };
+  document.getElementById('stop').onclick = function () {
+    pausado = true; synth.cancel(); i = 0; btn.textContent = '▶ Escuchar';
+  };
+})();
+</script>
+</body>
+</html>
