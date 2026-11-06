@@ -2,3 +2,4 @@
 - 2026-09-30: Tokens
 - 2026-09-30: Context window
 - 2026-10-01: Retrieval-augmented generation (RAG)
+- 2026-11-06: Daily data file (JSON), step 1 repeated
